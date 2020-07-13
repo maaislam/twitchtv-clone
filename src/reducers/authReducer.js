@@ -1,14 +1,15 @@
 const initialState = {
-    isSignedIn: null
+    isSignedIn: null,
+    userId:null
 }
 
-export default (state = initialState, { type }) => {
+export default (state = initialState, { type, payload }) => {
     switch (type) {
 
     case 'SIGN_IN':
-        return { ...state, isSignedIn:true }
+        return { ...state, isSignedIn:true, userId: payload }
     case 'SIGN_OUT':
-        return { ...state, isSignedIn:false }
+        return { ...state, isSignedIn:false, userId: null }
 
     default:
         return state
