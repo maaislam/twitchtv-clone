@@ -6,7 +6,7 @@ import GoogleAuth from './GoogleAuth';
 
 const Header = () => {
     return (
-        <div className="ui secondary pointing menu">
+        <div className="ui secondary pointing menu" style = {{paddingTop:'1rem'}}>
 
             <Link to="/" className = "item">
                 Streamz

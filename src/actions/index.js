@@ -16,9 +16,12 @@ export const signOut = () => ({
 
 export const createStream = (formValues) => {
     
-    return async (dispatch) => {
+    return async (dispatch, getState) => {
 
-        const response = await streams.post('/streams', formValues);
+        const {userId} = getState().auth
+        const response = await streams.post('/streams', {...formValues, userId});
+
+        console.log(response.data)
 
         dispatch({type: 'CREATE_STREAM', payload: response.data})
     }
@@ -30,8 +33,9 @@ export const fetchAllStream = () => {
     return async (dispatch) => {
 
         const response = await streams.get('/streams');
-
-        dispatch({type: 'FETCH_ALL_STREAM', payload: response.data})
+        const responseObject = Object.assign({}, response.data);
+        //console.log(test)
+        dispatch({type: 'FETCH_ALL_STREAM', payload: responseObject})
     }
     
 };
@@ -61,7 +65,10 @@ export const deleteStream = (id) => {
 
         await streams.delete(`/streams/${id}`);
 
-        dispatch({type: 'EDIT_STREAM', payload: id})
+        dispatch({type: 'DELETE_STREAM', payload: id})
     }
     
 };
+
+
+
