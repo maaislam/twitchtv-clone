@@ -9,7 +9,7 @@ const Header = () => {
         <div className="ui secondary pointing menu" style = {{paddingTop:'1rem'}}>
 
             <Link to="/" className = "item">
-                Streamz
+                StreamZ
             </Link>
             <div className="right menu">
             <Link to = "/" className = "item">

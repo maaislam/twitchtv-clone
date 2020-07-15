@@ -4,6 +4,8 @@ import { connect } from 'react-redux'
 import {fetchAllStream} from '../../actions'
 import { Link } from 'react-router-dom'
 
+import Loader from '../Loader'
+
 export class StreamList extends Component {
     
     componentDidMount(){
@@ -30,23 +32,23 @@ export class StreamList extends Component {
     }
 
     renderList = () => {
-
-        return this.props.streams.map(stream => {
-            return (
-                <div className="item" key = {stream.id}>
-                {this.renderEditDelBtn(stream)}
-                    <i className="large middle aligned icon video"/>
-                    <div className="content">
-                        <div className="header">{stream.title}</div>
-                        <div className="description">
-                        {stream.description}
+        if (this.props.streams){
+            return this.props.streams.map(stream => {
+                return (
+                    <div className="item" key = {stream.id}>
+                    {this.renderEditDelBtn(stream)}
+                        <i className="large middle aligned icon video"/>
+                        <div className="content">
+                            <div className="header">{stream.title}</div>
+                            <div className="description">
+                            {stream.description}
+                            </div>
                         </div>
+                        
                     </div>
-                    
-                </div>
-            )
-        })
-
+                )
+            })
+        }
 
     };
 
@@ -63,15 +65,36 @@ export class StreamList extends Component {
 
     };
 
+    renderLoaderOrList = () => {
+
+        if (this.props.isFetching){
+            return(
+                <div >
+                    <Loader />
+                    <Loader />
+                   
+                </div>
+                
+            )
+        }else if (!this.props.isFetching){
+            return(
+                <div className = "ui celled list">
+                    {this.renderList()}
+                </div>
+                
+            )
+        }
+    };
+
     render() {
         //console.log(this.props.streams)
         return (
             <div>
-                <div className = "ui celled list">
-                    {this.renderList()}
-                    
-                </div>
+                
+                {this.renderLoaderOrList()}
+    
                 {this.renderCreateStreamBtn()}
+                
             </div>
         )
     }
@@ -79,9 +102,11 @@ export class StreamList extends Component {
 
 const mapStateToProps = (state) => ({
    
-    streams: Object.values(state.streams),
+    streams: Object.values(state.streams.streamList),
+    isFetching:state.streams.isFetching,
     currentUserId: state.auth.userId,
-    isSignedIn:state.auth.isSignedIn 
+    isSignedIn:state.auth.isSignedIn
+    
 
 })
 
