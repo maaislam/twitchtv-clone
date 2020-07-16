@@ -16,7 +16,7 @@ export class StreamList extends Component {
 
 
     renderEditDelBtn = (stream) => {
-        if (stream.userId===this.props.currentUserId){
+        if (stream.userId && stream.userId===this.props.currentUserId){
             return(
                 <div className="right floated content">
                     <button className="ui button primary">
@@ -69,9 +69,8 @@ export class StreamList extends Component {
 
         if (this.props.isFetching){
             return(
-                <div >
-                    <Loader />
-                    <Loader />
+                <div>
+                    <Loader className= "item" count = {10}/>
                    
                 </div>
                 
@@ -104,7 +103,7 @@ const mapStateToProps = (state) => ({
    
     streams: Object.values(state.streams.streamList),
     isFetching:state.streams.isFetching,
-    currentUserId: state.auth.userId,
+    currentUserId: state.auth.user.userId,
     isSignedIn:state.auth.isSignedIn
     
 

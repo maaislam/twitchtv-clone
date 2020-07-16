@@ -2,7 +2,8 @@ import React, { Component } from 'react';
 
 import { connect } from 'react-redux'
 
-import {  signIn, signOut  } from '../actions'
+import {  signIn, signOut, openUserCard  } from '../actions'
+import UserProfileCard from './UserProfileCard';
 
 
 
@@ -21,7 +22,7 @@ class GoogleAuth extends Component {
         window.gapi.load('client:auth2', () => {
             window.gapi.client.init({
                 clientId:'134024839870-iulf9vp6a3o9dkpbol7e0vlfpairva2r.apps.googleusercontent.com',
-                scope:'email'
+                scope:'profile email'
             }).then(()=>{
                 this.auth = window.gapi.auth2.getAuthInstance();
                 /**
@@ -32,6 +33,8 @@ class GoogleAuth extends Component {
                  * keep listening for auth status change
                  */
                 this.auth.isSignedIn.listen(this.onAuthChange);
+
+
             });
         });
         
@@ -42,8 +45,21 @@ class GoogleAuth extends Component {
      */
     onAuthChange = (isSignedIn) => {
 
+      
+
         if (isSignedIn) {
-            this.props.signIn(this.auth.currentUser.get().getId())
+
+            const signedUser = {
+                fullName:this.auth.currentUser.get().getBasicProfile().getName(),
+                userId: this.auth.currentUser.get().getId(),
+                email:this.auth.currentUser.get().getBasicProfile().getEmail(),
+                userImage:this.auth.currentUser.get().getBasicProfile().getImageUrl()
+            }
+
+
+
+            this.props.signIn(signedUser)
+            //console.log(user);
         }else {
             this.props.signOut();
         }
@@ -61,6 +77,29 @@ class GoogleAuth extends Component {
         this.auth.signOut();
     };
 
+    /*
+     ***************************************************** 
+     */
+    onProfileImgClick = () => {
+        this.props.openUserCard();
+    };
+
+    showUserCard = () => {
+        if (this.props.userCardClick){
+            return(
+                <div>
+                    <UserProfileCard 
+                        userImage = {this.props.user.userImage}
+                        fullName = {this.props.user.fullName}
+                        email = {this.props.user.email}
+                        onSignOutClick = {this.onSignOutClick}/>
+                </div>
+            )
+        }
+    };
+    /**
+     *****************************************************
+     */
     /**
      * conditionally renders sign in/out button based on state isSignedIn
      */
@@ -73,8 +112,17 @@ class GoogleAuth extends Component {
             )
         }else if (this.props.isSignedIn) {
             return(
-                <button onClick = {this.onSignOutClick} className="ui red google button">
-                    <i className="icon google"/> Sign Out</button>
+                <div>
+                    <button onClick = {this.onProfileImgClick} className = "circular ui icon button" style = {{padding:'0'}}>
+                        <img 
+                            className = "ui mini circular image" 
+                            src={this.props.user.userImage} 
+                            alt={this.props.user.fullName}/>
+                    </button> 
+                  
+                    {this.showUserCard()}
+                </div>
+               
             )
         }else {
             return (
@@ -97,9 +145,11 @@ class GoogleAuth extends Component {
 
 const mapStateToProps = (state) => ({
 
-    isSignedIn:state.auth.isSignedIn
+    isSignedIn:state.auth.isSignedIn,
+    user:state.auth.user,
+    userCardClick:state.auth.userCard
 });
 
 
 
-export default connect(mapStateToProps,{signIn, signOut})(GoogleAuth);
+export default connect(mapStateToProps,{signIn, signOut, openUserCard})(GoogleAuth);

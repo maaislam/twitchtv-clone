@@ -2,14 +2,18 @@ import streams from '../api/streams'
 
 
 
-export const signIn = (userId) => ({
+export const signIn = (signedUser) => ({
     type: 'SIGN_IN',
-    payload: userId
+    payload: signedUser
     
 });
 
 export const signOut = () => ({
     type: 'SIGN_OUT',
+    
+});
+export const openUserCard = () => ({
+    type: 'USER_CARD',
     
 });
 
@@ -23,11 +27,11 @@ export const createStream = (formValues) => {
     
     return async (dispatch, getState) => {
 
-        const {userId} = getState().auth
-        const response = await streams.post('/streams', {...formValues, userId});
+        const {user} = getState().auth
+        const response = await streams.post('/streams', {...formValues, ...user});
         //const responseObject = Object.assign({}, response.data);
-        const test = {[(response.data.id)-1]:response.data}
-        console.log(test)
+        const test = {[response.data.id]:response.data}
+        //console.log(test)
 
         dispatch({type: 'CREATE_STREAM', payload: test})
     }
@@ -45,7 +49,7 @@ export const fetchAllStream = () => {
          * an object.
          */
         const responseObject = Object.assign({}, response.data);
-        console.log(responseObject)
+        //console.log(responseObject)
         dispatch({type: 'FETCH_ALL_STREAM', payload: responseObject})
     }
     
