@@ -54,26 +54,26 @@ export const fetchAllStream = () => {
          * this helps with edit and post single method and in those cases respose retuns
          * an object.
          */
-        console.log(response.data)
+        //console.log(response.data)
         dispatch({type: 'FETCH_ALL_STREAM', payload: response.data})
     }
     
 };
-export const fetchSingleStream = (id,formValues) => {
+export const fetchSingleStream = (id) => {
     
     return async (dispatch) => {
 
-        const response = await streams.get(`/streams/${id}`, formValues);
+        const response = await streams.get(`/streams/${id}`);
 
         dispatch({type: 'FETCH_SINGLE_STREAM', payload: response.data})
     }
     
 };
-export const editStream = (id) => {
+export const editStream = (id,formValues) => {
     
     return async (dispatch) => {
 
-        const response = await streams.put(`/streams/${id}`);
+        const response = await streams.put(`/streams/${id}`, formValues);
 
         dispatch({type: 'EDIT_STREAM', payload: response.data})
     }

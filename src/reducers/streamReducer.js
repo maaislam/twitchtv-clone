@@ -26,10 +26,10 @@ export default (state = initialState, { type, payload }) => {
         return { ...state, streamList: {...state.streamList,..._.mapKeys(payload,'id')}, isFetching:false};
 
     case 'FETCH_SINGLE_STREAM':
-        return { ...state, [(payload.id)-1]:payload };
+        return { ...state, streamList:{...state.streamList, [(payload.id)]:payload}, isFetching:false  };
     
     case 'EDIT_STREAM':
-        return { ...state, [(payload.id)-1]:payload };
+        return { ...state, [(payload.id)]:payload };    //*TO BE CORRECTED SOON!
     
     case 'DELETE_STREAM':
         return _.omit(state, payload);
