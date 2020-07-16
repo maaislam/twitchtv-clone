@@ -13,6 +13,8 @@ export default (state = initialState, { type, payload }) => {
         return { ...state, isSignedIn:false, user:{}, userCard:false }
     case 'USER_CARD':
         return { ...state, userCard:!state.userCard }
+    case 'USER_CARD_OUTSIDE_CLICK':
+        return { ...state, userCard:false }
 
     default:
         return state

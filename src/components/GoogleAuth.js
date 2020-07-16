@@ -84,6 +84,8 @@ class GoogleAuth extends Component {
         this.props.openUserCard();
     };
 
+   
+
     showUserCard = () => {
         if (this.props.userCardClick){
             return(
@@ -126,7 +128,7 @@ class GoogleAuth extends Component {
             )
         }else {
             return (
-                <button onClick = {this.onSignInClick} className="ui red google button">
+                <button onClick = {this.onSignInClick} className="ui red google button" style = {{marginBottom:'0'}}>
                     <i className="icon google"/>Sign In with Google</button>
             )
         }
@@ -136,7 +138,7 @@ class GoogleAuth extends Component {
 
     render() {
         return (
-            <div>
+            <div className = "ui item" style = {{marginBottom: '-8px'}}>
                 {this.renderAuthButton()}
             </div>
         );

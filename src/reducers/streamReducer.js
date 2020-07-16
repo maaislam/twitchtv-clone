@@ -19,10 +19,11 @@ export default (state = initialState, { type, payload }) => {
 
 
     case 'CREATE_STREAM':
-        return { ...state, ...state.streamList,...payload, isFetching:false};
+        return { ...state, streamList:{...state.streamList,...payload}, isFetching:false};
 
     case 'FETCH_ALL_STREAM':
-        return { ...state, streamList: payload, isFetching:false};
+   
+        return { ...state, streamList: {...state.streamList,..._.mapKeys(payload,'id')}, isFetching:false};
 
     case 'FETCH_SINGLE_STREAM':
         return { ...state, [(payload.id)-1]:payload };
@@ -39,6 +40,11 @@ export default (state = initialState, { type, payload }) => {
         return state
     }
 }
+
+
+
+
+
  /**
          * 
          * / ES6 code

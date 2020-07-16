@@ -1,5 +1,6 @@
 import streams from '../api/streams'
 
+import history from '../history'
 
 
 export const signIn = (signedUser) => ({
@@ -14,6 +15,10 @@ export const signOut = () => ({
 });
 export const openUserCard = () => ({
     type: 'USER_CARD',
+    
+});
+export const userCardOutsideClick = () => ({
+    type: 'USER_CARD_OUTSIDE_CLICK',
     
 });
 
@@ -33,7 +38,8 @@ export const createStream = (formValues) => {
         const test = {[response.data.id]:response.data}
         //console.log(test)
 
-        dispatch({type: 'CREATE_STREAM', payload: test})
+        dispatch({type: 'CREATE_STREAM', payload: test});
+        history.push('/')
     }
     
 };
@@ -48,9 +54,8 @@ export const fetchAllStream = () => {
          * this helps with edit and post single method and in those cases respose retuns
          * an object.
          */
-        const responseObject = Object.assign({}, response.data);
-        //console.log(responseObject)
-        dispatch({type: 'FETCH_ALL_STREAM', payload: responseObject})
+        console.log(response.data)
+        dispatch({type: 'FETCH_ALL_STREAM', payload: response.data})
     }
     
 };

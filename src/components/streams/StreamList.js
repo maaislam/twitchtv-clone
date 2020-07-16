@@ -9,19 +9,29 @@ import Loader from '../Loader'
 export class StreamList extends Component {
     
     componentDidMount(){
-
+        /**
+         ** calling action creator to fetch all streams
+         */
         this.props.fetchAllStream()
     };
     
+    /**
+     *
+     */
 
-
+    /**
+     ** conditionally render edit and delete buttons i.e. 
+     ** if there is a valid userId and if userId stored in streams is equal to current logged in userId. 
+     ** current userId is derived from google auth api see onAuthChange method in GoogleAuth component.
+     ** This method is invoked in renderList method.
+     */
     renderEditDelBtn = (stream) => {
         if (stream.userId && stream.userId===this.props.currentUserId){
             return(
                 <div className="right floated content">
-                    <button className="ui button primary">
+                    <Link to = {`/streams/edit/${stream.id}`} className="ui button primary">
                         Edit
-                    </button>
+                    </Link>
                     <button className="ui button negative">
                         Delete
                     </button>
@@ -30,7 +40,9 @@ export class StreamList extends Component {
         }
 
     }
-
+    /**
+     ** iterate over streams array. Note it has been converted to array from object in mapStateToProps function. 
+     */
     renderList = () => {
         if (this.props.streams){
             return this.props.streams.map(stream => {
@@ -51,7 +63,9 @@ export class StreamList extends Component {
         }
 
     };
-
+    /**
+     ** this button routes user to createStream page and is only shown if user is signed in.
+     */
     renderCreateStreamBtn = () => {
         if(this.props.isSignedIn){
             return(
@@ -64,6 +78,13 @@ export class StreamList extends Component {
         }
 
     };
+    
+    /*
+     * this method ensures a loader is shown if isFetching is true and if false it shows the list of streams by calling the renderList method.
+     */
+    
+    
+    
 
     renderLoaderOrList = () => {
 
@@ -78,6 +99,7 @@ export class StreamList extends Component {
         }else if (!this.props.isFetching){
             return(
                 <div className = "ui celled list">
+                    <h1>All Streams</h1>
                     {this.renderList()}
                 </div>
                 
@@ -86,7 +108,7 @@ export class StreamList extends Component {
     };
 
     render() {
-        //console.log(this.props.streams)
+        
         return (
             <div>
                 
@@ -104,7 +126,8 @@ const mapStateToProps = (state) => ({
     streams: Object.values(state.streams.streamList),
     isFetching:state.streams.isFetching,
     currentUserId: state.auth.user.userId,
-    isSignedIn:state.auth.isSignedIn
+    isSignedIn:state.auth.isSignedIn,
+    
     
 
 })
