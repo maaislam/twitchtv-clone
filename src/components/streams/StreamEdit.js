@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux'
-import { fetchSingleStream } from '../../actions'
+import { fetchSingleStream, editStream } from '../../actions'
+import StreamForm from './StreamForm';
 
 
 class StreamEdit extends Component {
@@ -13,14 +14,24 @@ class StreamEdit extends Component {
         this.props.fetchSingleStream(this.props.match.params.id);
     }
 
+
+    onSubmit = (formValues) => {
+        this.props.editStream(this.props.match.params.id, formValues)
+    }
+
     renderStreamToEdit = () => {
         if (this.props.streamToEdit) {
+            /**
+             * *destruct this,props.streaToEdit and pick out tile and description
+             * *never pass whole object to put request.
+             */
+            const {title, description} = this.props.streamToEdit;
             return(
                 <div>
-                   <h4>{this.props.streamToEdit.title}</h4>
-                   <h5>{this.props.streamToEdit.description}</h5>
-                   <p>Stream ID: {this.props.streamToEdit.id}</p>
-
+                    <h3>Edit Stream</h3>
+                    <StreamForm 
+                        initialValues = {{title, description}}
+                        onSubmit = {this.onSubmit}/>
                 </div>
             )
         }
@@ -42,4 +53,4 @@ const mapStateToProps = (state, ownProps) => {
     }
 }
 
-export default connect(mapStateToProps,{  fetchSingleStream  })(StreamEdit);
+export default connect(mapStateToProps,{  fetchSingleStream, editStream  })(StreamEdit);
