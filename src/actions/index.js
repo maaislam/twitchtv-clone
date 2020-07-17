@@ -50,9 +50,9 @@ export const fetchAllStream = () => {
 
         const response = await streams.get('/streams');
         /**
-         * response comes back with an array so it is converted to object,
-         * this helps with edit and post single method and in those cases respose retuns
-         * an object.
+         * *response comes back with an array so it is converted to object,
+         * *this helps with edit and post single method and in those cases respose retuns
+         * *an object.
          */
         //console.log(response.data)
         dispatch({type: 'FETCH_ALL_STREAM', payload: response.data})
@@ -94,6 +94,3 @@ export const deleteStream = (id) => {
 
 
 
-/**
- * action creator for loading spinner
- */
