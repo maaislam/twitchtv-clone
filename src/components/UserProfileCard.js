@@ -1,22 +1,43 @@
 import React, { Component } from 'react';
 
 import { connect } from 'react-redux'
-
+import {  openUserCard  } from '../actions'
 import  './UserProfileCard.css'
 
 class UserProfileCard extends Component {
 
+    constructor(props) {
+        super(props);
 
-    onSignOutClick = () => {
-        this.props.onSignOutClick()
+        this.profileCardRef = React.createRef();
+        //this.setWrapperRef = this.setWrapperRef.bind(this);
+        //this.handleClickOutside = this.handleClickOutside.bind(this);
     }
-
    
 
+    componentDidMount() {
+        document.addEventListener('click', this.handleClickOutside);
+    }
+
+    componentWillUnmount() {
+        document.removeEventListener('click', this.handleClickOutside);
+    }
+
+    handleClickOutside = (event) => {
+        if (this.profileCardRef && !this.profileCardRef.current.contains(event.target)) {
+            //alert('You clicked outside of me!');
+
+            this.props.openUserCard()
+        }
+    }
+
+    onSignOutClick = () => {
+            this.props.onSignOutClick()
+        }
 
     render() {
         return (
-            <div className={`ui card profile_card ${this.props.userCard?"fade-in":"fade-out"}`}>
+            <div ref = {this.profileCardRef} className={`ui card profile_card ${this.props.userCard?"fade-in":"fade-out"}`}>
                 <div>
                     <img className = "ui small circular image" src={this.props.userImage} alt={this.props.fullName}/>
                 </div>
@@ -43,4 +64,4 @@ const mapStateToProps = (state) => ({
 
 
 
-export default connect(mapStateToProps)(UserProfileCard);
+export default connect(mapStateToProps,{  openUserCard  })(UserProfileCard);
