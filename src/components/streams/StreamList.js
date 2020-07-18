@@ -51,7 +51,7 @@ export class StreamList extends Component {
                     {this.renderEditDelBtn(stream)}
                         <i className="large middle aligned icon video"/>
                         <div className="content">
-                            <div className="header">{stream.title}</div>
+                            <Link to= {`streams/${stream.id}`} className="header">{stream.title}</Link>
                             <div className="description">
                             {stream.description}
                             </div>
