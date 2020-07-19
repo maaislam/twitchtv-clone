@@ -17,10 +17,7 @@ export const openUserCard = () => ({
     type: 'USER_CARD',
     
 });
-export const userCardOutsideClick = () => ({
-    type: 'USER_CARD_OUTSIDE_CLICK',
-    
-});
+
 
 /**
  * action creator for creating a new stream getState() is used to retreive

@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 
 import { connect } from 'react-redux'
+
 import {  openUserCard  } from '../actions'
 import  './UserProfileCard.css'
 
@@ -10,8 +11,7 @@ class UserProfileCard extends Component {
         super(props);
 
         this.profileCardRef = React.createRef();
-        //this.setWrapperRef = this.setWrapperRef.bind(this);
-        //this.handleClickOutside = this.handleClickOutside.bind(this);
+        
     }
    
 
@@ -24,10 +24,10 @@ class UserProfileCard extends Component {
     }
 
     handleClickOutside = (event) => {
-        if (this.profileCardRef && !this.profileCardRef.current.contains(event.target)) {
+        if (this.profileCardRef && !this.profileCardRef.current.contains(event.target) && this.props.userCard) {
             //alert('You clicked outside of me!');
 
-            this.props.openUserCard()
+            this.props.openUserCard();
         }
     }
 
@@ -37,22 +37,24 @@ class UserProfileCard extends Component {
 
     render() {
         return (
-            <div ref = {this.profileCardRef} className={`ui card profile_card ${this.props.userCard?"fade-in":"fade-out"}`}>
-                <div>
-                    <img className = "ui small circular image" src={this.props.userImage} alt={this.props.fullName}/>
-                </div>
-                <div className="content">
-                    <div className="center aligned header">{this.props.fullName}</div>
-                    
-                    <div className=" center aligned description">
-                    {this.props.email}  
+           
+                <div ref = {this.profileCardRef} className="ui card profile_card">
+                    <div>
+                        <img className = "ui small circular image" src={this.props.userImage} alt={this.props.fullName}/>
+                    </div>
+                    <div className="content">
+                        <div className="center aligned header">{this.props.fullName}</div>
+                        
+                        <div className=" center aligned description">
+                        {this.props.email}  
+                        </div>
+                    </div>
+                    <div className=" center aligned extra content">
+                    <button onClick = {this.onSignOutClick} className="ui red google button">
+                            <i className="icon google"/>Sign Out</button>
                     </div>
                 </div>
-                <div className=" center aligned extra content">
-                <button onClick = {this.onSignOutClick} className="ui red google button">
-                        <i className="icon google"/>Sign Out</button>
-                </div>
-            </div>
+          
         );
     }
 }
@@ -64,4 +66,4 @@ const mapStateToProps = (state) => ({
 
 
 
-export default connect(mapStateToProps,{  openUserCard  })(UserProfileCard);
+export default connect(mapStateToProps, {openUserCard}) (UserProfileCard);

@@ -25,18 +25,18 @@ class StreamShow extends Component {
     }
 
     componentWillUnmount() {
-        this.player.destroy();
+        //this.player.destroy();
     }
 
     showVideo = () => {
 
         if (this.player || !this.props.streamToShow){
-            return;
+            return console.log(this.player);
         }
 
         this.player = flv.createPlayer({
             type:'flv',
-            url: `http://localhost:8000/live/${this.props.match.params.id}.flv`
+            url: `http://192.168.0.103:8000/live/${this.props.match.params.id}.flv`
         }); 
         this.player.attachMediaElement(this.myRef.current);
         this.player.load();

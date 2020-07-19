@@ -3,10 +3,12 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux'
 
 import {  signIn, signOut, openUserCard  } from '../actions'
+
+
+
+import { Transition } from 'react-transition-group';
 import UserProfileCard from './UserProfileCard';
-
-
-
+import  './UserProfileCard.css'
 
 
 class GoogleAuth extends Component {
@@ -87,17 +89,26 @@ class GoogleAuth extends Component {
    
 
     showUserCard = () => {
-        if (this.props.userCardClick){
+      //if (this.props.userCardClick){
             return(
-                <div>
-                    <UserProfileCard 
-                        userImage = {this.props.user.userImage}
-                        fullName = {this.props.user.fullName}
-                        email = {this.props.user.email}
-                        onSignOutClick = {this.onSignOutClick}/>
-                </div>
+              
+                    <Transition in={this.props.userCardClick} timeout={310} mountOnEnter unmountOnExit>
+                    {state => (
+                      
+                        <div className = {` custom fade-${state}`}>
+                            <UserProfileCard 
+                           
+                                userImage = {this.props.user.userImage}
+                                fullName = {this.props.user.fullName}
+                                email = {this.props.user.email}
+                                onSignOutClick = {this.onSignOutClick}/>
+              
+                        </div>)}
+                  
+                    </Transition>    
+                
             )
-        }
+      //  }
     };
     /**
      *****************************************************
@@ -114,8 +125,8 @@ class GoogleAuth extends Component {
             )
         }else if (this.props.isSignedIn) {
             return(
-                <div>
-                    <button onClick = {this.onProfileImgClick} className = "circular ui icon button" style = {{padding:'0'}}>
+                <div onClick = {this.onProfileImgClick} >
+                    <button className = "circular ui icon button" style = {{padding:'0'}}>
                         <img 
                             className = "ui mini circular image" 
                             src={this.props.user.userImage} 
